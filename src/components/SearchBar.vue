@@ -10,6 +10,9 @@ import {
 } from "@headlessui/vue";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/20/solid";
 
+const props = defineProps({
+    cardOptions: Array
+})
 const cardOption = [
   { value: 1, name: "Wade Cooper" },
   { value: 2, name: "Arlene Mccoy" },
@@ -43,7 +46,7 @@ function loadCards(query, setOptions) {
         results.map((searchedCards) => {
           return {
             value: searchedCards.id,
-            label: searchedCards.name,
+            name: searchedCards.name,
           };
         })
       );

@@ -2,6 +2,7 @@
 import AppHeader from "./components/AppHeader.vue";
 // import ListForm from "./components/ListForm.vue";
 import { ref, onMounted, computed, watch } from "vue";
+import SearchCardAdd from "./components/SearchCardAdd.vue";
 // import SearchBar from "./components/SearchBar.vue";
 
 //the state of the list and the items that is going to be listed in the array
@@ -22,6 +23,7 @@ const cardListAcs = computed(() =>
 );
 
 const addCard = () => {
+  console.log(inputContent.value)
   if(inputContent.value.trim() === '' || inputCategory.value === null){
     return 
   }
@@ -47,7 +49,7 @@ watch(name, (newVal) => {
   localStorage.setItem("name", newVal);
 });
 
-//keeps track and brings back the inpuitted name when the app refreshes
+//keeps track and brings back the inputted name when the app refreshes
 onMounted(() => {
   name.value = localStorage.getItem("name") || "";
   cardList.value = JSON.parse(localStorage.getItem('cardList')) || []
@@ -125,6 +127,8 @@ onMounted(() => {
           </div>
 
         </div>
+
+        <SearchCardAdd />
 
       </section>
     </section>
