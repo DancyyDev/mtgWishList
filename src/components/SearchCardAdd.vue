@@ -6,7 +6,6 @@ let cardGallery;
 const cardWishList = ref([]);
 const inputCardName = ref("");
 
-
 //add clicked card to wish list
 const addToList = (e) => {
   console.log(e.target.currentSrc);
@@ -22,64 +21,53 @@ const removeCard = (cards) => {
   cardWishList.value = cardWishList.value.filter((t) => t !== cards);
 };
 
-const findCard = () => {
- 
-  fetch(`https://api.scryfall.com/cards/search?q=${inputCardName.value}`)
-    .then((response) => response.json())
-    .then((results) => {
-        return results.data
-        // return results.data.map((x) =>
-        //   cardGallery.value.push({
-        //     cardName: x.name,
-        //     cardImg: x.image_uris,
-        //   })
-        // );
-    });
-};
- 
 async function loadGallery() {
-    if (inputCardName.value.trim() === "") {
+  if (inputCardName.value.trim() === "") {
     return;
   }
-    await fetch(`https://api.scryfall.com/cards/search?q=${inputCardName.value}`)
+  await fetch(`https://api.scryfall.com/cards/search?q=${inputCardName.value}`)
     .then((response) => response.json())
     .then((results) => {
-        cardGallery = Array.from(results.data)
-        cardGallery.forEach(x => console.log(x.name))
+      cardGallery = Array.from(results.data);
+      cardGallery.forEach(x => console.log(x.name))
     });
-    
+    inputCardName.value = ""
 }
 
 </script>
 
 <template>
+
   <div class="container row align-items-start">
     <div v-for="wish in cardWishList" class="col-3">
-      <p>{{ wish.name }}</p>
-      <button @click="removeCard(wish)">X</button>
+      <p class="col">{{ wish.name }}</p>
+      <button class="col" @click="removeCard(wish)">DEL</button>
     </div>
   </div>
 
   <div>
     <form @submit.prevent="loadGallery">
-      <label for="findCard">
+      <label for="loadGallery">
         <input
           type="text"
           name="mtgCard"
           id="mtgCard"
-          placeholder="Type in Card name to find"
+          placeholder="Search Card"
           v-model="inputCardName"
         />
       </label>
       <input class="btn btn-primary" type="submit" value="Search Card" />
     </form>
-    <div class="container row align-items-start">
-      <div v-for="cards in cardGallery" class="col-3">
-        <div @click="addToList">
-          <p>{{ cards.name }}</p>
-          <img :src="`${cards.image_uris.small}`" :alt="`${cards.name}`" />
-        </div>
+
+  </div>
+
+  <div class="container row align-items-start">
+    <div v-for="cards in cardGallery" class="col-3">
+      <div @click="addToList">
+        <p>{{ cards.name }}</p>
+        <img :src="`${cards.image_uris.small}`" :alt="`${cards.name}`" />
       </div>
     </div>
   </div>
+
 </template>
